@@ -113,11 +113,22 @@ namespace ConsoleParking
         public void ShowTransactions()
         {
             Console.WriteLine("\nДата - Номер авто - Сумма");
-            Transactions.OrderBy(tr => tr.CarNumber).Where(tr => tr.DateTime.AddMinutes(1) >= DateTime.Now).ToList<Transaction>().ForEach((transaction) =>
+            Transactions.OrderBy(tr=>tr.DateTime).Where(tr => tr.DateTime.AddMinutes(1) >= DateTime.Now).ToList<Transaction>().ForEach((transaction) =>
             {
                 Console.WriteLine($"{transaction.DateTime.ToString()} - {transaction.CarNumber} - {transaction.WriteOff}");
             });
         }
 
+        public void ShowLogFile()
+        {
+            if (File.Exists("Transaction.log"))
+            {
+                List<TransactionLog> transactions= JsonConvert.DeserializeObject<List<TransactionLog>>(File.ReadAllText("Transaction.log"));
+                Console.WriteLine("\nДата - Сумма");
+                transactions.ForEach((tr) => { Console.WriteLine($"{tr.Date.ToString()} - {tr.Sum}"); });
+            }
+            else
+                Console.WriteLine("\nФайл Transaction.log ещё не сгенерировался!");
+        }
     }
 }
