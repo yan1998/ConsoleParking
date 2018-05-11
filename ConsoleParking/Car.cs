@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading;
 
 namespace ConsoleParking
 {
     public class Car
     {
         private string carNumber;
+        private double balance;
+        private object locker=new object();
 
         public Car(string carNumber, double balance, CarType carType)
         {
@@ -33,7 +34,17 @@ namespace ConsoleParking
         /// <summary>
         /// Properties for car balance
         /// </summary>
-        public double Balance { get; set; }
+        public double Balance
+        {
+            get { return balance; }
+            set
+            {
+                lock (locker)
+                {
+                    balance = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Properties for get car type
