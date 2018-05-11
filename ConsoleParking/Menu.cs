@@ -47,7 +47,29 @@ namespace ConsoleParking
 
         private static void AddCarToParking()
         {
-            throw new NotImplementedException();
+            try
+            {
+                Console.Write("\nВведите номер автомобиля: ");
+                string carNumber = Console.ReadLine();
+                Console.Write("Введите баланс автомобиля: ");
+                double carBalance = double.Parse(Console.ReadLine());
+                int carType;
+                do
+                {
+                    Console.Write("Выберите тип автомобиля:\n\t1)Легковой\n\t2)Грузовой\n\t3)Автобус\n\t4)Мотоцикл\nВведите нужное число: ");
+                    carType = int.Parse(Console.ReadLine());
+                } while (carType < 0 || carType > 4);
+                Car car = new Car(carNumber, carBalance, (CarType)carType-1);
+                car.AddToParking(parking);
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Ввод некорректный! Баланс и тип авто необходимо вводить числами!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private static void DeleteCarFromParking()

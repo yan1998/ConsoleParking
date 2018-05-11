@@ -51,5 +51,23 @@ namespace ConsoleParking
         /// </summary>
         public CarType CarType { get; private set; }
 
+        public void AddToParking(Parking parking)
+        {
+            if (parking.Cars.Count == parking.Settings.ParkingSpace)
+            {
+                Console.WriteLine("Вы не можете припоркавать автомобиль! Все места на паркове заняты!");
+                return;
+            }
+            else if (parking.Settings.Dictionary[CarType] > Balance)
+            {
+                Console.WriteLine("У вас не хватает денег для парковки!");
+                return;
+            }
+            else
+            {
+                parking.Cars.Add(this);
+                Console.WriteLine("Автомобиль был успешно добавлен в паркинг!");
+            }
+        }
     }
 }
