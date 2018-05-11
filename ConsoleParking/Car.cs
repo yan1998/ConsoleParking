@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using System.Timers;
 
 namespace ConsoleParking
 {
@@ -8,6 +8,7 @@ namespace ConsoleParking
         private string carNumber;
         private double balance;
         private object locker=new object();
+        private Timer timer=new Timer();
 
         public Car(string carNumber, double balance, CarType carType)
         {
@@ -36,7 +37,13 @@ namespace ConsoleParking
         /// </summary>
         public double Balance
         {
-            get { return balance; }
+            get
+            {
+                lock (locker)
+                {
+                    return balance;
+                }
+            }
             set
             {
                 lock (locker)
@@ -58,17 +65,32 @@ namespace ConsoleParking
             else
             {
                 parking.Cars.Add(this);
+                timer.Interval = parking.Settings.Timeout * 1000;
+                timer.Elapsed += Timer_Elapsed;
+                timer.Start();
                 Console.WriteLine("Автомобиль был успешно добавлен в паркинг!");
             }
+        }
+
+        //Write-down a cash
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            double cost = Parking.Instance.Settings.Dictionary[this.CarType];
+            if (Balance < cost)
+                cost *= Parking.Instance.Settings.Fine;
+            Balance -= cost;
+            Transaction transaction = new Transaction(DateTime.Now, CarNumber, cost);
+            Parking.Instance.Transactions.Add(transaction);
         }
 
         public void RemoveFromParking(Parking parking)
         {
             if (Balance < 0)
-                Console.WriteLine("Вы не можете покинуть паркинг! У вас есть долги!");
+                Console.WriteLine($"Вы не можете покинуть паркинг! У вас есть долги! Пополните баланс на {Math.Abs(Balance)}!");
             else
             {
                 parking.Cars.Remove(this);
+                timer.Stop();
                 Console.WriteLine("Автомобиль успешно покинул паркинг!");
             }
         }
