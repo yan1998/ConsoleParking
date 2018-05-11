@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ConsoleParking
@@ -51,6 +52,19 @@ namespace ConsoleParking
                 else
                     throw new Exception("Баланс не может быть меньше нуля!");
             }
+        }
+
+        public void ShowAutosInParking()
+        {
+            Console.WriteLine("Номер авто - тип авто");
+            Cars.OrderBy(car=>car.CarType.ToString()).ThenBy(car=>car.CarNumber).ToList<Car>().ForEach((car) => {
+                Console.WriteLine($"{car.CarNumber} - {car.CarType}");
+            });
+        }
+
+        public Car FindAutoByNumber(string carNumber)
+        {
+            return Cars.Find((car) => { return carNumber == car.CarNumber; });
         }
     }
 }
