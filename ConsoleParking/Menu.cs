@@ -47,6 +47,11 @@ namespace ConsoleParking
 
         private static void AddCarToParking()
         {
+            if (parking.CountFreePlaces == 0)
+            {
+                Console.WriteLine("Вы не можете припоркавать автомобиль! Все места на паркове заняты!");
+                return;
+            }
             try
             {
                 Console.Write("\nВведите номер автомобиля: ");
@@ -131,7 +136,7 @@ namespace ConsoleParking
 
         private static void ShowFreePlaces()
         {
-            throw new NotImplementedException();
+            Console.WriteLine($"\nКоличество свободных мест: {parking.CountFreePlaces}");
         }
     }
 }

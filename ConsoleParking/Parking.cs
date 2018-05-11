@@ -66,5 +66,8 @@ namespace ConsoleParking
         {
             return Cars.Find((car) => { return carNumber == car.CarNumber; });
         }
+
+        public int CountFreePlaces { get { return Settings.ParkingSpace - Cars.Count; } }
+
     }
 }

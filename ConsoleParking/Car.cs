@@ -42,9 +42,7 @@ namespace ConsoleParking
 
         public void AddToParking(Parking parking)
         {
-            if (parking.Cars.Count == parking.Settings.ParkingSpace)
-                Console.WriteLine("Вы не можете припоркавать автомобиль! Все места на паркове заняты!");
-            else if (parking.Settings.Dictionary[CarType] > Balance)
+            if (parking.Settings.Dictionary[CarType] > Balance)
                 Console.WriteLine("У вас не хватает денег для парковки!");
             else
             {
