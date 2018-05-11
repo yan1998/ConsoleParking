@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.IO;
+using System.Timers;
+using Newtonsoft.Json;
+using System.Collections.Concurrent;
 
 namespace ConsoleParking
 {
     public class Parking
     {
+        private class TransactionLog
+        {
+            public string Date { get; set; }
+            public double Sum { get; set; }
+        }
+
         private object locker = new object();
 
         /// <summary>
@@ -19,17 +28,37 @@ namespace ConsoleParking
         /// </summary>
         public static Parking Instance
         {
-            get { return parking.Value; }        
+            get { return parking.Value; }
         }
 
-        private double balance=0;
+        private Timer timer = new Timer(60000);
+        private double balance = 0;
 
-        private Parking() { }
+        private Parking()
+        {
+            timer.Elapsed += Timer_Elapsed;
+            timer.Start();
+        }
+
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            List<TransactionLog> transactions = new List<TransactionLog>();
+            if (File.Exists("Transaction.log"))
+            {
+                transactions = JsonConvert.DeserializeObject<List<TransactionLog>>(File.ReadAllText("Transaction.log"));
+                File.Delete("Transaction.log");
+            }
+            double sum = Transactions.Where(tra => tra.DateTime.AddMinutes(1) >= DateTime.Now).Sum(tra => tra.WriteOff);
+            transactions.Add(new TransactionLog() { Sum = sum, Date = DateTime.Now.ToString() });
+            string newJson = JsonConvert.SerializeObject(transactions);
+
+            File.WriteAllText("Transaction.log", newJson);
+        }
 
         /// <summary>
         /// Get parking settings 
         /// </summary>
-        public Settings Settings{ get { return Settings.Instance; } }
+        public Settings Settings { get { return Settings.Instance; } }
 
         /// <summary>
         /// Get list of cars which staying in parking
@@ -39,7 +68,7 @@ namespace ConsoleParking
         /// <summary>
         /// Get list of transactions
         /// </summary>
-        public List<Transaction> Transactions { get; } = new List<Transaction>();
+        public ConcurrentBag<Transaction> Transactions { get; } = new ConcurrentBag<Transaction>();
 
         /// <summary>
         /// Show parking income
@@ -68,7 +97,8 @@ namespace ConsoleParking
         public void ShowAutosInParking()
         {
             Console.WriteLine("\nНомер авто - тип авто");
-            Cars.OrderBy(car=>car.CarType.ToString()).ThenBy(car=>car.CarNumber).ToList<Car>().ForEach((car) => {
+            Cars.OrderBy(car => car.CarType.ToString()).ThenBy(car => car.CarNumber).ToList<Car>().ForEach((car) =>
+            {
                 Console.WriteLine($"{car.CarNumber} - {car.CarType}");
             });
         }
@@ -83,7 +113,8 @@ namespace ConsoleParking
         public void ShowTransactions()
         {
             Console.WriteLine("\nДата - Номер авто - Сумма");
-            Transactions.OrderBy(tr=>tr.CarNumber).Where(tr=>tr.DateTime.AddMinutes(1)>=DateTime.Now).ToList<Transaction>().ForEach((transaction) => {
+            Transactions.OrderBy(tr => tr.CarNumber).Where(tr => tr.DateTime.AddMinutes(1) >= DateTime.Now).ToList<Transaction>().ForEach((transaction) =>
+            {
                 Console.WriteLine($"{transaction.DateTime.ToString()} - {transaction.CarNumber} - {transaction.WriteOff}");
             });
         }
