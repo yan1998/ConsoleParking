@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace ConsoleParking
 {
@@ -6,6 +7,8 @@ namespace ConsoleParking
     {
         static void Main(string[] args)
         {
+            if (File.Exists("Transaction.log"))
+                File.Delete("Transaction.log");
             Console.WriteLine("Вас приветствует Горшков Ян!)");
             Menu.MainMenu();
             Console.WriteLine("\nСпасибо за использование!");
