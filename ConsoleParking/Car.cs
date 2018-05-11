@@ -33,7 +33,7 @@ namespace ConsoleParking
         /// <summary>
         /// Properties for car balance
         /// </summary>
-        public double Balance { get; private set; }
+        public double Balance { get; set; }
 
         /// <summary>
         /// Properties for get car type

@@ -84,6 +84,29 @@ namespace ConsoleParking
             }
         }
 
+        private static void ReplenishmentAutoBalance()
+        {
+            if (parking.Cars.Count == 0)
+                Console.WriteLine("\nАвтомобилей в паркинге нет!");
+            else
+            {
+                Car car = ChoiceCarByNumber();
+                if (car != null)
+                {
+                    Console.WriteLine($"Текущий баланс {car.CarNumber} = {car.Balance}.");
+                    Console.Write("Введите сумму для пополнения баланса:");
+                    double charge = double.Parse(Console.ReadLine());
+                    if (charge < 0)
+                        Console.WriteLine("Вы не можете уменьшить баланс!");
+                    else
+                    {
+                        car.Balance += charge;
+                        Console.WriteLine($"Баланс после пополнения = {car.Balance}.");
+                    }
+                }
+            }
+        }
+
         private static Car ChoiceCarByNumber()
         {
             Console.WriteLine();
@@ -97,11 +120,6 @@ namespace ConsoleParking
         }
 
         private static void ShowTransactionStory()
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void ReplenishmentAutoBalance()
         {
             throw new NotImplementedException();
         }
