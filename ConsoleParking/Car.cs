@@ -4,8 +4,9 @@ using System.Linq;
 
 namespace ConsoleParking
 {
-    public class Car
+    public class Car:IDisposable  
     {
+        private bool disposed = false;
         private string carNumber;
         private double balance;
         private object locker=new object();
@@ -97,6 +98,23 @@ namespace ConsoleParking
                 timer.Stop();
                 Console.WriteLine("Автомобиль успешно покинул паркинг!");
             }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+                timer.Dispose();
+
+            disposed = true;
         }
     }
 }

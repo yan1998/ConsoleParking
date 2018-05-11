@@ -8,7 +8,7 @@ using System.Collections.Concurrent;
 
 namespace ConsoleParking
 {
-    public class Parking
+    public class Parking:IDisposable
     {
         private class TransactionLog
         {
@@ -31,6 +31,7 @@ namespace ConsoleParking
             get { return parking.Value; }
         }
 
+        private bool disposed = false;
         private Timer timer = new Timer(60000);
         private double balance = 0;
 
@@ -129,6 +130,23 @@ namespace ConsoleParking
             }
             else
                 Console.WriteLine("\nФайл Transaction.log ещё не сгенерировался!");
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+                timer.Dispose();
+
+            disposed = true;
         }
     }
 }
