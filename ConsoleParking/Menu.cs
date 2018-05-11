@@ -96,19 +96,26 @@ namespace ConsoleParking
                 Console.WriteLine("\nАвтомобилей в паркинге нет!");
             else
             {
-                Car car = ChoiceCarByNumber();
-                if (car != null)
+                try
                 {
-                    Console.WriteLine($"Текущий баланс {car.CarNumber} = {car.Balance}.");
-                    Console.Write("Введите сумму для пополнения баланса:");
-                    double charge = double.Parse(Console.ReadLine());
-                    if (charge < 0)
-                        Console.WriteLine("Вы не можете уменьшить баланс!");
-                    else
+                    Car car = ChoiceCarByNumber();
+                    if (car != null)
                     {
-                        car.Balance += charge;
-                        Console.WriteLine($"Баланс после пополнения = {car.Balance}.");
+                        Console.WriteLine($"Текущий баланс {car.CarNumber} = {car.Balance}.");
+                        Console.Write("Введите сумму для пополнения баланса:");
+                        double charge = double.Parse(Console.ReadLine());
+                        if (charge < 0)
+                            Console.WriteLine("Вы не можете уменьшить баланс!");
+                        else
+                        {
+                            car.Balance += charge;
+                            Console.WriteLine($"Баланс после пополнения = {car.Balance}.");
+                        }
                     }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Некорректный ввод! Ожидалось число!");
                 }
             }
         }
