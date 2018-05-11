@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Timers;
+using System.Linq;
 
 namespace ConsoleParking
 {
@@ -25,10 +26,12 @@ namespace ConsoleParking
             get { return carNumber; }
             private set
             {
-                if (value.Length != 0)
-                    carNumber = value;
-                else
+                if(value.Length == 0)
                     throw new Exception("Номер авто должен быть указан!");
+                else if(Parking.Instance.Cars.Where(car => car.CarNumber == value).Any())
+                    throw new Exception("Номер авто не может повторяться!");
+                else
+                    carNumber = value;                
             }
         }
 
