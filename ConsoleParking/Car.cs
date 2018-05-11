@@ -7,7 +7,6 @@ namespace ConsoleParking
     public class Car
     {
         private string carNumber;
-        private double balance;
 
         public Car(string carNumber, double balance, CarType carType)
         {
@@ -34,17 +33,7 @@ namespace ConsoleParking
         /// <summary>
         /// Properties for car balance
         /// </summary>
-        public double Balance
-        {
-            get { return balance; }
-            private set
-            {
-                if (value > 0)
-                    balance = value;
-                else
-                    throw new Exception("Баланс не может быть равным нулю");
-            }
-        }
+        public double Balance { get; private set; }
 
         /// <summary>
         /// Properties for get car type
@@ -54,19 +43,24 @@ namespace ConsoleParking
         public void AddToParking(Parking parking)
         {
             if (parking.Cars.Count == parking.Settings.ParkingSpace)
-            {
                 Console.WriteLine("Вы не можете припоркавать автомобиль! Все места на паркове заняты!");
-                return;
-            }
             else if (parking.Settings.Dictionary[CarType] > Balance)
-            {
                 Console.WriteLine("У вас не хватает денег для парковки!");
-                return;
-            }
             else
             {
                 parking.Cars.Add(this);
                 Console.WriteLine("Автомобиль был успешно добавлен в паркинг!");
+            }
+        }
+
+        public void RemoveFromParking(Parking parking)
+        {
+            if (Balance < 0)
+                Console.WriteLine("Вы не можете покинуть паркинг! У вас есть долги!");
+            else
+            {
+                parking.Cars.Remove(this);
+                Console.WriteLine("Автомобиль успешно покинул паркинг!");
             }
         }
     }

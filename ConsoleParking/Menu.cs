@@ -14,6 +14,7 @@ namespace ConsoleParking
             ConsoleKeyInfo key;
             do
             {
+                Console.WriteLine("\nОжидаю нажатия...(Для повтороного открытия меню нажмите 7)");
                 key = Console.ReadKey();
                 if (!Char.IsDigit(key.KeyChar))
                     Console.WriteLine("\nНеобходимо нажимать только цифры!");
@@ -28,7 +29,6 @@ namespace ConsoleParking
                         case '6': ShowFreePlaces(); break;
                         case '7': ShowMainMenu(); break;
                     }
-                Console.WriteLine("\nОжидаю нажатия...(Для повтороного открытия меню нажмите 7)");
             } while (key.KeyChar != '0');
         }
 
@@ -42,7 +42,7 @@ namespace ConsoleParking
                 "5) Просмотр общего дохода парковки\n" +
                 "6) Просмотр свободных мест\n" +
                 "7) Вывести меню\n" +
-                "0) Выход из программы\nНажмите нужную цифру на клавиатуре: ");
+                "0) Выход из программы\n");
         }
 
         private static void AddCarToParking()
@@ -56,7 +56,7 @@ namespace ConsoleParking
                 int carType;
                 do
                 {
-                    Console.Write("Выберите тип автомобиля:\n\t1)Легковой\n\t2)Грузовой\n\t3)Автобус\n\t4)Мотоцикл\nВведите нужное число: ");
+                    Console.Write("Выберите тип автомобиля:\n\t1)Passenger\n\t2)Truck\n\t3)Bus\n\t4)Motorcycle\nВведите нужное число: ");
                     carType = int.Parse(Console.ReadLine());
                 } while (carType < 0 || carType > 4);
                 Car car = new Car(carNumber, carBalance, (CarType)carType-1);
@@ -74,7 +74,26 @@ namespace ConsoleParking
 
         private static void DeleteCarFromParking()
         {
-            throw new NotImplementedException();
+            if (parking.Cars.Count == 0)
+                Console.WriteLine("\nАвтомобилей в паркинге нет!");
+            else
+            {
+                Car car=ChoiceCarByNumber();
+                if (car != null)
+                    car.RemoveFromParking(parking);
+            }
+        }
+
+        private static Car ChoiceCarByNumber()
+        {
+            Console.WriteLine();
+            parking.ShowAutosInParking();
+            Console.Write("Введите номер авто:");
+            string number = Console.ReadLine();
+            Car car= parking.FindAutoByNumber(number);
+            if(car == null)
+                Console.WriteLine("Авто не было найдено!");
+            return car;
         }
 
         private static void ShowTransactionStory()
