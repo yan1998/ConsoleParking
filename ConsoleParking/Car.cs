@@ -79,6 +79,7 @@ namespace ConsoleParking
             if (Balance < cost)
                 cost *= Parking.Instance.Settings.Fine;
             Balance -= cost;
+            Parking.Instance.Balance += cost;
             Transaction transaction = new Transaction(DateTime.Now, CarNumber, cost);
             Parking.Instance.Transactions.Add(transaction);
         }

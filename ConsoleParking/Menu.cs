@@ -131,7 +131,7 @@ namespace ConsoleParking
 
         private static void ShowParkingIncome()
         {
-            throw new NotImplementedException();
+            Console.WriteLine($"\nДоход паркига составляет: {parking.Balance}");
         }
 
         private static void ShowFreePlaces()

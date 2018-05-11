@@ -7,6 +7,8 @@ namespace ConsoleParking
 {
     public class Parking
     {
+        private object locker = new object();
+
         /// <summary>
         /// Instance of singleton object
         /// </summary>
@@ -44,13 +46,22 @@ namespace ConsoleParking
         /// </summary>
         public double Balance
         {
-            get { return parking.Value.balance; }
+            get
+            {
+                lock (locker)
+                {
+                    return parking.Value.balance;
+                }
+            }
             set
             {
-                if (value > 0)
-                    parking.Value.balance = value;
-                else
-                    throw new Exception("Баланс не может быть меньше нуля!");
+                lock (locker)
+                {
+                    if (value > 0)
+                        parking.Value.balance = value;
+                    else
+                        throw new Exception("Баланс не может быть меньше нуля!");
+                }
             }
         }
 
