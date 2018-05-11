@@ -6,7 +6,10 @@ namespace ConsoleParking
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Вас приветствует Горшков Ян!)");
+            Menu.MainMenu();
+            Console.WriteLine("\nСпасибо за использование!");
+            Console.ReadKey();
         }
     }
 }
