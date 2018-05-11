@@ -17,7 +17,7 @@ namespace ConsoleParking
         }
 
         /// <summary>
-        /// Properties for set car identifier
+        /// Properties for get car identifier
         /// </summary>
         public string CarNumber
         {
