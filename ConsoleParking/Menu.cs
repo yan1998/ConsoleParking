@@ -126,7 +126,7 @@ namespace ConsoleParking
 
         private static void ShowTransactionStory()
         {
-            throw new NotImplementedException();
+            parking.ShowTransactions();
         }
 
         private static void ShowParkingIncome()

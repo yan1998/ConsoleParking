@@ -56,7 +56,7 @@ namespace ConsoleParking
 
         public void ShowAutosInParking()
         {
-            Console.WriteLine("Номер авто - тип авто");
+            Console.WriteLine("\nНомер авто - тип авто");
             Cars.OrderBy(car=>car.CarType.ToString()).ThenBy(car=>car.CarNumber).ToList<Car>().ForEach((car) => {
                 Console.WriteLine($"{car.CarNumber} - {car.CarType}");
             });
@@ -68,6 +68,14 @@ namespace ConsoleParking
         }
 
         public int CountFreePlaces { get { return Settings.ParkingSpace - Cars.Count; } }
+
+        public void ShowTransactions()
+        {
+            Console.WriteLine("\nДата - Номер авто - Сумма");
+            Transactions.OrderBy(tr=>tr.CarNumber).Where(tr=>tr.DateTime.AddMinutes(1)>=DateTime.Now).ToList<Transaction>().ForEach((transaction) => {
+                Console.WriteLine($"{transaction.DateTime.ToString()} - {transaction.CarNumber} - {transaction.WriteOff}");
+            });
+        }
 
     }
 }
