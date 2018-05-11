@@ -18,8 +18,8 @@ namespace ConsoleParking
         public static Settings Instance { get { return settings.Value; } }
 
         private int timeout=3;
-        private double fine=1;
-        private int parkingSpace=1;
+        private double fine=1.5;
+        private int parkingSpace=10;
         private Dictionary<CarType, float> dictionary=new Dictionary<CarType, float>()
         {
             [CarType.Truck] = 5,
