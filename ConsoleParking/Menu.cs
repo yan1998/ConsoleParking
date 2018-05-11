@@ -28,10 +28,10 @@ namespace ConsoleParking
                         case '5': ShowParkingIncome(); break;
                         case '6': ShowFreePlaces(); break;
                         case '7': ShowMainMenu(); break;
+                        case '8': ShowLogFile(); break;
                     }
             } while (key.KeyChar != '0');
         }
-
 
         private static void ShowMainMenu()
         {
@@ -42,6 +42,7 @@ namespace ConsoleParking
                 "5) Просмотр общего дохода парковки\n" +
                 "6) Просмотр свободных мест\n" +
                 "7) Вывести меню\n" +
+                "8) Просмотр лог файла\n"+
                 "0) Выход из программы\n");
         }
 
@@ -137,6 +138,11 @@ namespace ConsoleParking
         private static void ShowFreePlaces()
         {
             Console.WriteLine($"\nКоличество свободных мест: {parking.CountFreePlaces}");
+        }
+
+        private static void ShowLogFile()
+        {
+            parking.ShowLogFile();
         }
     }
 }
