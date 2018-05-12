@@ -10,15 +10,18 @@ namespace ConsoleParking
 
         public static void MainMenu()
         {
-            ShowMainMenu();
+       
             ConsoleKeyInfo key;
             do
             {
-                Console.WriteLine("\nОжидаю нажатия...(Для повтороного открытия меню нажмите 7)");
+                Console.Clear();
+                ShowMainMenu();
                 key = Console.ReadKey();
                 if (!Char.IsDigit(key.KeyChar))
                     Console.WriteLine("\nНеобходимо нажимать только цифры!");
                 else
+                {
+                    Console.Clear();
                     switch (key.KeyChar)
                     {
                         case '1': AddCarToParking(); break;
@@ -27,9 +30,11 @@ namespace ConsoleParking
                         case '4': ShowTransactionStory(); break;
                         case '5': ShowParkingIncome(); break;
                         case '6': ShowFreePlaces(); break;
-                        case '7': ShowMainMenu(); break;
-                        case '8': ShowLogFile(); break;
+                        case '7': ShowLogFile(); break;
                     }
+                    Console.WriteLine("\nДля выхода в меню нажмите на любую клавишу!");
+                    Console.ReadKey();
+                }
             } while (key.KeyChar != '0');
         }
 
@@ -41,13 +46,13 @@ namespace ConsoleParking
                 "4) Просмотр истории транзакций за последнюю минуту\n" +
                 "5) Просмотр общего дохода парковки\n" +
                 "6) Просмотр свободных мест\n" +
-                "7) Вывести меню\n" +
-                "8) Просмотр лог файла\n"+
-                "0) Выход из программы\n");
+                "7) Просмотр лог файла\n"+
+                "0) Выход из программы\nПросто нажмите нужную цифру: ");
         }
 
         private static void AddCarToParking()
         {
+            Console.WriteLine("Вы зашли в режим добавления авто!\n");
             if (parking.CountFreePlaces == 0)
             {
                 Console.WriteLine("Вы не можете припоркавать автомобиль! Все места на паркове заняты!");
@@ -55,7 +60,7 @@ namespace ConsoleParking
             }
             try
             {
-                Console.Write("\nВведите номер автомобиля: ");
+                Console.Write("Введите номер автомобиля: ");
                 string carNumber = Console.ReadLine();
                 Console.Write("Введите баланс автомобиля: ");
                 double carBalance = double.Parse(Console.ReadLine());
@@ -80,6 +85,7 @@ namespace ConsoleParking
 
         private static void DeleteCarFromParking()
         {
+            Console.Write("Вы вошли в режим удаления авто!");
             if (parking.Cars.Count == 0)
                 Console.WriteLine("\nАвтомобилей в паркинге нет!");
             else
@@ -92,6 +98,7 @@ namespace ConsoleParking
 
         private static void ReplenishmentAutoBalance()
         {
+            Console.WriteLine("Вы вошли в режим пополнения баланса авто!");
             if (parking.Cars.Count == 0)
                 Console.WriteLine("\nАвтомобилей в паркинге нет!");
             else
@@ -124,7 +131,7 @@ namespace ConsoleParking
         {
             Console.WriteLine();
             parking.ShowAutosInParking();
-            Console.Write("Введите номер авто:");
+            Console.Write("\nВведите номер авто:");
             string number = Console.ReadLine();
             Car car= parking.FindAutoByNumber(number);
             if(car == null)
@@ -144,7 +151,8 @@ namespace ConsoleParking
 
         private static void ShowFreePlaces()
         {
-            Console.WriteLine($"\nКоличество свободных мест: {parking.CountFreePlaces}");
+            Console.WriteLine($"\nКоличество занятых мест: {parking.Cars.Count}");
+            Console.WriteLine($"Количество свободных мест: {parking.CountFreePlaces}");
         }
 
         private static void ShowLogFile()
