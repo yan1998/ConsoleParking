@@ -97,6 +97,7 @@ namespace ConsoleParking
                 parking.Cars.Remove(this);
                 timer.Stop();
                 Console.WriteLine("Автомобиль успешно покинул паркинг!");
+                this.Dispose();
             }
         }
 

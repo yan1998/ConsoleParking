@@ -12,6 +12,7 @@ namespace ConsoleParking
             Console.WriteLine("Вас приветствует Горшков Ян!)");
             Menu.MainMenu();
             Console.WriteLine("\nСпасибо за использование!");
+            Parking.Instance.Dispose();
             Console.ReadKey();
         }
     }
